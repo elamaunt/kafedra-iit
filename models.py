@@ -26,7 +26,7 @@ class User(polymodel.PolyModel):
 class Student(User):
     group = db.ReferenceProperty(Group,required=True)
     
-class Teacher(User):
+class Employee(User):
     position = db.StringProperty(required=True)
 
 class UserMessage(db.Model):

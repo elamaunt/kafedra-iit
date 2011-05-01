@@ -9,11 +9,17 @@ class MainPage(webapp.RequestHandler):
         user = users.get_current_user()
         
         if user:
-            self.response.out.write('Hello, ' + user.nickname()+'!')
-            self.response.out.write('<br><a href="'+users.create_logout_url(self.request.uri)+'">log out</a>')
+            self.response.out.write('Привет, ' + user.nickname()+'!')
+            registered_user = db.GqlQuery('SELECT * FROM User WHERE user=:user', user = user)
+            if registered_user.count() == 0:
+                self.response.out.write('<br><a href="/register">зарегистрироваться</a>')
+            else:
+                registered_user = registered_user.fetch(1)[0]
+                self.response.out.write('<br>' + registered_user.name.encode('utf-8') + ' ' + registered_user.surname.encode('utf-8'))
+            
+            self.response.out.write('<br><a href="'+users.create_logout_url(self.request.uri)+'">выйти</a>')
         else:
-            self.response.out.write('Hello, Guest!')
-            self.response.out.write('<br><a href="'+users.create_login_url(self.request.uri)+'">log in</a>')
+            self.response.out.write('<br><a href="'+users.create_login_url(self.request.uri)+'">Залогиниться в гугловский акк</a>')
             
 application = webapp.WSGIApplication(
                                      [('/', MainPage)],

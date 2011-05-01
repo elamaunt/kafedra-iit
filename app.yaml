@@ -4,5 +4,11 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: .*
+- url: /
   script: main.py
+
+- url: /register
+  script: register.py
+
+- url: /add
+  script: add.py
